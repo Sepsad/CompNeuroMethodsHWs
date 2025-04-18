@@ -4,14 +4,16 @@ This repository contains coursework, assignments, and projects for the Computati
 
 ## Overview
 
-This course explores computational approaches to understanding neural systems and brain function. 
+This course explores computational approaches to understanding neural systems and brain function.
 
 ## Repository Structure
 
 ```
 CompNeuroMethods/
-├── HW1/           # First assignment materials
-├── HW2/           # Second assignment materials
+├── HW1/         
+├── HW2/
+├── HW3/
+├── HW4/     
 ├── lectures/      # Course lecture notes and materials
 └── projects/      # Final project files
 ```
@@ -23,6 +25,7 @@ CompNeuroMethods/
 ### Homework 2
 
 Exploration of classic neural models including the Integrate-and-Fire model developed by Louis Lapicque (1907) and the Hodgkin-Huxley model (1950s). This assignment examines the evolution from phenomenological descriptions to mechanistic explanations of neural activity.
+
 
 ## Resources
 
