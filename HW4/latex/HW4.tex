@@ -143,15 +143,14 @@ The bifurcation diagram explores how the number and nature of fixed points chang
 
 \begin{itemize}
     \item For low values of $w$ (weak self-connection): The system has a single stable fixed point.
-    \item For intermediate values of $w$ and $I$: The system exhibits bistability with three fixed points (two stable, one unstable).
-    \item For high values of $w$ (strong self-connection): The system can have more complex behavior.
+    \item For higher values of $w$: The system exhibits bistability with three fixed points (two stable, one unstable).
 \end{itemize}
 
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{bifurcation_diagram.png}
+    \includegraphics[width=0.65\textwidth]{bifurcation_diagram.png}
     \caption{Bifurcation diagram showing how the number of fixed points changes with synaptic strength ($w$) and external input ($I$). Different colors represent different numbers of fixed points. The boundaries between regions represent bifurcation points where the qualitative behavior of the system changes.}
     \label{fig:bifurcation}
 \end{figure}
@@ -159,34 +158,209 @@ The bifurcation diagram explores how the number and nature of fixed points chang
 
 
 
-\section{Second Section}
+\section{2D network: mutual excitation}
 
-% \subsection{First Subsection of Second Section}
+\subsection{Plot the dynamics}
 
-% Description of analysis performed here.
+The time evolution of the firing rates $x(t)$ and $y(t)$ was simulated for different initial conditions. The differential equations were integrated numerically using the Euler method with a time step of $dt = 0.1$.
+
+Figure 6 shows the evolution of the firing rates over time for four different initial conditions.
+% \begin{itemize}
+%     \item Low-low initial state: $[x(0), y(0)] = [5, 5]$
+%     \item Middle-low initial state: $[x(0), y(0)] = [20, 5]$
+%     \item High-high initial state: $[x(0), y(0)] = [45, 45]$
+%     \item Mixed initial state: $[x(0), y(0)] = [30, 20]$
+% \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{dynamics2_plot.png}
+    \caption{Time evolution of the firing rates $x(t)$ and $y(t)$ for different initial conditions. The top panel shows the firing rate of neuron $x$, and the bottom panel shows the firing rate of neuron $y$.}
+    \label{fig:dynamics}
+\end{figure}
+
+From the time evolution plots, we can observe that:
+\begin{itemize}
+    \item Initial conditions starting near $[5, 5]$ converge to zero firing rates (both neurons shut down).
+    \item Initial conditions starting near $[45, 45]$ converge to a high firing rate fixed point.
+    \item The middle-low and mixed initial states show interesting transient dynamics before eventually converging to either zero firing rate or a high firing rate fixed point.
+\end{itemize}
+
+This suggests that the system exhibits bistability, with two stable fixed points (attractors) and a saddle point that separates their basins of attraction.
+
+\subsection{State space}
+
+
+The trajectories in state space (plotting $x$ versus $y$) provide a more comprehensive view of the dynamics. Figure 7 shows these trajectories for seven different initial conditions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{state_space2.png}
+    \caption{State space trajectories for different initial conditions. Arrows indicate the direction of movement along each trajectory. They show that trajectories starting on one side of the saddle’s stable manifold flow to the low-rate rest state, while those on the other side are driven to the high-rate self-excited state, revealing bistability.}
+    \label{fig:state_space}
+\end{figure}
+
+\subsection{Nullclines}
+
+Nullclines are curves in the state space where the derivative of one variable is zero. For this system:
+\begin{itemize}
+    \item $x$-nullcline: $\frac{dx}{dt} = 0 \implies x = f(w_2 y + I) = f(0.4y - 10)$
+    \item $y$-nullcline: $\frac{dy}{dt} = 0 \implies y = f(w_1 x + I) = f(0.4x - 10)$
+\end{itemize}
+
+Figure 8 shows the nullclines plotted in the state space.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{state_space2_fixed_points.png}
+    \caption{Nullclines of the system. The red dashed line represents the $x$-nullcline ($dx/dt = 0$), the blue dashed line represents the $y$-nullcline ($dy/dt = 0$), and red dots represent fixed points. }
+    \label{fig:nullclines}
+\end{figure}
+
+Along the red \(x\)-nullcline (\(\dot{x}=0\)) the horizontal flow changes sign—
+arrows point left (\(\dot{x}<0\)) to its left and right (\(\dot{x}>0\)) to its right—
+while along the blue \(y\)-nullcline (\(\dot{y}=0\)) the vertical flow is upward
+(\(\dot{y}>0\)) below and downward (\(\dot{y}<0\)) above.
+Because the sigmoid is S-shaped, the nullclines bend sharply around the threshold
+\(0.4(\text{x or y})-10=25\).
+\subsection{Fixed points}
+The fixed points of the system are located at the intersections of the nullclines (Figure 8). Solving the system numerically:
+\begin{equation}
+\begin{cases}
+x = f(0.4y - 10)\\
+y = f(0.4x - 10)
+\end{cases}
+\end{equation}
+
+We find three fixed points:
+\begin{enumerate}
+    \item Low firing rate fixed point: approximately at $[x, y] \approx [0, 0]$
+    \item Middle firing rate fixed point: approximately at $[x, y] \approx [25, 25]$
+    \item High firing rate fixed point: approximately at $[x, y] \approx [50, 50]$
+\end{enumerate}
 
 % \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.8\textwidth]{figure3.png}
-% \caption{Figure caption}
-% \label{fig:figure3}
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{state_space2_fixed_points.png}
+%     \caption{State space with trajectories (solid lines), nullclines (dashed lines), and fixed points (red dots).}
+%     \label{fig:state_space_nullclines_fp}
 % \end{figure}
 
-% \begin{table}[H]
-% \centering
-% \begin{tabular}{lc}
-% \toprule
-% \textbf{Measure} & \textbf{Value} \\
-% \midrule
-% Measure 1    & Value 1 \\
-% Measure 2    & Value 2 \\
-% \bottomrule
-% \end{tabular}
-% \caption{Table caption}
-% \label{tab:results}
-% \end{table}
+\begin{itemize}
+    \item \textbf{Stable attractors.}  Trajectories drift toward the low-rate node near zero and toward the high-rate node close to saturation, demonstrating that both equilibria are stable.
+    \item \textbf{Unstable saddle.} At moderate activity the trajectories reach a fixed point that is stable along one manifold (y = -x) and unstable along the orthogonal one (y = x). This exactly aligns with the signature of a saddle.
+  \end{itemize}
+  
+  \noindent
+  The state-space therefore contains two attracting fixed points—one at low (\(x=y\approx0\))
+  and one at high (\(x=y\approx50\)) firing rates separated by an unstable saddle at
+  \(x=y=25\).  State-space trajectories illustrate how every initial
+  condition eventually settles into one of the two attractors, with the
+  saddle acting as a boundary between them.
 
-% Interpretation of results here.
+\subsection{Study the stability of the fixed points analitically}
+To analyze the stability of the fixed points analytically, we compute the Jacobian matrix of the system:
+
+\begin{equation}
+J = 
+\begin{bmatrix}
+\frac{\partial}{\partial x}\left(-x + f(w_2 y + I)\right) & \frac{\partial}{\partial y}\left(-x + f(w_2 y + I)\right) \\
+\frac{\partial}{\partial x}\left(-y + f(w_1 x + I)\right) & \frac{\partial}{\partial y}\left(-y + f(w_1 x + I)\right)
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1 & w_2 f'(w_2 y + I) \\
+w_1 f'(w_1 x + I) & -1
+\end{bmatrix}
+\end{equation}
+
+where $f'(s) = \frac{df}{ds} = 50\sigma(s)(1 - \sigma(s))$, the derivative of our activation function.
+
+For each fixed point $(x^*,y^*)$, we evaluate the Jacobian and determine its eigenvalues:
+\[
+\lambda_{1,2} = \frac{\text{tr}(J)}{2} \pm \sqrt{\frac{(\text{tr}(J))^2}{4} - \det(J)}
+\]
+
+The stability of each fixed point is determined by the eigenvalues:
+\begin{itemize}
+    \item If all eigenvalues have negative real parts, the fixed point is stable (attractor)
+    \item If any eigenvalue has a positive real part, the fixed point is unstable
+    \item If eigenvalues have opposite signs, the fixed point is a saddle point
+\end{itemize}
+
+Fixed point classification based on the determinant and trace:
+\begin{itemize}
+    \item $\det(J) < 0$: Saddle point (unstable)
+    \item $\det(J) > 0, \text{tr}(J) < 0$: Stable node or spiral
+    \item $\det(J) > 0, \text{tr}(J) > 0$: Unstable node or spiral
+\end{itemize}
+
+At the low fixed point $(x^*,y^*) \approx (0,0)$, the derivatives $f'$ are nearly zero because inputs are far below threshold, making $\det(J) \approx 1$ and $\text{tr}(J) \approx -2$, yielding eigenvalues $\lambda_{1,2} \approx -1$. This confirms it's a stable node.
+
+At the middle fixed point $(x^*,y^*) \approx (25,25)$, the derivatives $f'$ are near maximum, and with $w_1=w_2=0.4$, we get $\det(J) = -24 < 0$, confirming it's a saddle point with one positive (4) and one negative (-6) eigenvalue.
+
+At the high fixed point $(x^*,y^*) \approx (50,50)$, similar to the low fixed point, the derivatives are small as inputs are far above threshold, giving $\det(J) > 0$ and $\text{tr}(J) < 0$, confirming it's a stable node.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Fixed Point} & \textbf{Eigenvalues} & \textbf{Determinant} & \textbf{Classification} \\
+\midrule
+Low $(0,0)$ & Both negative & Positive & Stable node \\
+Middle $(25,25)$ & One positive, one negative & Negative & Saddle point \\
+High $(50,50)$ & Both negative & Positive & Stable node \\
+\bottomrule
+\end{tabular}
+\caption{Stability analysis results for the three fixed points. The bistable behavior arises from having two stable nodes separated by a saddle point.}
+\label{tab:stability}
+\end{table}
+
+This analytical stability analysis confirms our observations from the state space trajectories and explains the system's bistable behavior, with the saddle point forming the boundary between the basins of attraction of the two stable states.
+
+\subsection{Bifurcation diagram}
+
+The bifurcation diagram shows how the number and position of fixed points change as the external input current $I$ varies from $-20$ to $-10$.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{bifurcation_analysis_22.png}
+        \caption{Bifurcation diagram showing the number of fixed points (top) and the $x$-coordinates of fixed points (bottom) as a function of external input $I$.}
+        \label{fig:bifurcation_matrix}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{nullcline_evolution_2.png}
+        \caption{Evolution of nullclines as $I$ changes. The intersections of nullclines are fixed points of the system, showing how they emerge with changing input.}
+        \label{fig:nullcline_evolution}
+    \end{subfigure}
+    \caption{Analysis of system dynamics as a function of external input current $I$.}
+    \label{fig:bifurcation_analysis_combined}
+\end{figure}
+
+\bigskip
+From the bifurcation diagram, we observe how the fixed point structure changes with input current $I$. The bifurcation point occurs at approximately $I \approx -16$ where saddle-node bifurcation takes place.
+
+
+From the bifurcation diagram, we can identify distinct regimes:
+\begin{itemize}
+    \item For very negative input ($I < -16$ approximately), there is only one stable fixed point with zero firing rate.
+    \item For less negative input values ($-16 < I $ approximately), there are three fixed points: two stable (low (zero) and high firing rates) and one unstable (saddle point).
+
+\end{itemize}
+
+The system exhibits bistability in the intermediate range of input currents. 
+
+
+
+
+\section{ND network: Hopfield neural network}
+
+
+
+
+
 
 \section{Conclusion}
 
