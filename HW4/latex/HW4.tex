@@ -13,6 +13,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{booktabs}
+\usepackage{wasysym}
 
 \geometry{a4paper, margin=1in}
 
@@ -47,7 +48,7 @@ This sigmoidal function has several key properties: output range of $[0, 120]$ s
 
 \subsection{Study the dynamics}
 
-When simulating the system with three initial conditions $r(0) = 59$, $r(0) = 60$, and $r(0) = 61$, we observe interesting dynamical behavior:
+When simulating the system with three initial conditions $r(0) = 59$, $r(0) = 60$, and $r(0) = 61$, I observe interesting dynamical behavior:
 
 \begin{itemize}
     \item For $r(0) = 59$: The firing rate decreases and settles at the lower stable fixed point.
@@ -165,12 +166,7 @@ The bifurcation diagram explores how the number and nature of fixed points chang
 The time evolution of the firing rates $x(t)$ and $y(t)$ was simulated for different initial conditions. The differential equations were integrated numerically using the Euler method with a time step of $dt = 0.1$.
 
 Figure 6 shows the evolution of the firing rates over time for four different initial conditions.
-% \begin{itemize}
-%     \item Low-low initial state: $[x(0), y(0)] = [5, 5]$
-%     \item Middle-low initial state: $[x(0), y(0)] = [20, 5]$
-%     \item High-high initial state: $[x(0), y(0)] = [45, 45]$
-%     \item Mixed initial state: $[x(0), y(0)] = [30, 20]$
-% \end{itemize}
+
 
 \begin{figure}[H]
     \centering
@@ -358,7 +354,204 @@ The system exhibits bistability in the intermediate range of input currents.
 \section{ND network: Hopfield neural network}
 
 
+\subsection{Invent a pattern}
 
+I begun by creating a specific pattern to store in our Hopfield network. For this experiment, I chose to create a simple 'X' pattern in an 8×8 grid. Each element in the pattern is either +1 or -1, represented visually as white or black pixels.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{Pattern 'X'.png}
+\caption{Visual representation of the 'X' pattern stored in the network.}
+\label{fig:pattern}
+\end{figure}
+
+The pattern is created as a 64-dimensional vector where each component takes the value +1 or -1 and is stored in the network's connectivity matrix using the outer product rule:
+
+\begin{equation}
+W_{ij} = \frac{1}{N}p_i p_j
+\end{equation}
+
+\subsection{Plot W and simulate the dynamics}
+After storing the pattern, we can visualize the weight matrix $W$, which encodes the synaptic connections between neurons. The weight matrix is constructed using the outer product of the pattern with itself, divided by the number of neurons (64):
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{Weight Matrix X.png}
+\caption{Visualization of the weight matrix after storing the 'X' pattern. Red indicates positive weights, blue indicates negative weights.}
+\label{fig:weight_matrix}
+\end{figure}
+
+The weight matrix shows the correlations between neurons based on the stored pattern. Strong positive connections (red) appear between neurons that have the same value in the pattern, while strong negative connections (blue) form between neurons with opposite values
+
+To simulate the dynamics of the Hopfield network, we implement an Euler integration method with the following update rule:
+\begin{equation}
+x(t+\Delta t) = x(t) + \Delta t \cdot [-x(t) + f(Wx(t))] + \sigma\eta(t)\sqrt{\Delta t}
+\end{equation}
+
+where $\Delta t = 0.1$ is the time step, and $\sigma = 0.1$ is the noise amplitude.
+
+Starting from random initial conditions, we examine how the network evolves over time:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Network Activity X.png}
+\caption{Evolution of network activity from random initial conditions. The network converges to the stored 'X' pattern.}
+\label{fig:network_dynamics}
+\end{figure}
+
+The figure illustrates the temporal evolution of the network state from random initial conditions. Over time, the network activity converges toward the stored pattern, demonstrating the attractor dynamics of Hopfield networks.
+
+
+
+
+\subsection{Fixed points}
+
+
+Running multiple simulations with different random initial conditions reveals consistent convergence behavior:
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.2\textwidth}
+\includegraphics[width=\textwidth]{Initial State 1.png}
+\caption{Initial State 1}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\includegraphics[width=\textwidth]{Final State 1.png}
+\caption{Final State 1}
+\end{subfigure}
+
+\begin{subfigure}{0.2\textwidth}
+\includegraphics[width=\textwidth]{Initial State 2.png}
+\caption{Initial State 2}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\includegraphics[width=\textwidth]{Final State 2.png}
+\caption{Final State 2}
+\end{subfigure}
+
+\begin{subfigure}{0.2\textwidth}
+\includegraphics[width=\textwidth]{Initial State 3.png}
+\caption{Initial State 3}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\includegraphics[width=\textwidth]{Final State 3.png}
+\caption{Final State 3}
+\end{subfigure}
+\caption{Three simulations with different random initial states. All converge to fixed points close to the stored 'X' pattern.}
+\label{fig:fixed_points}
+\end{figure}
+
+Multiple simulations with different initial conditions revealed the fixed points of the system. As predicted by theory, with one stored pattern $p$, the network exhibits two fixed points: the pattern itself and its negative (-$p$).
+
+The stability of these fixed points was evident from the convergence behavior of the network. All initial states converged to one of these fixed points, depending on which basin of attraction they started in. This behavior is characteristic of associative memory systems.
+
+% The overlap between each final state and the stored pattern was calculated using:
+% \begin{equation}
+% \text{overlap} = \frac{1}{N}\sum_{i=1}^{N}x_i p_i
+% \end{equation}
+
+% Across multiple trials, the final states consistently show high overlap with the stored pattern (approximately 0.9-1.0), confirming that the stored pattern acts as an attractor in the network's state space.
+
+\subsection{Introduce a new pattern}
+
+To test multiple pattern storage, I created and added a second pattern—a smiley face (\smiley{})—to the network:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{Pattern 'Smiley'.png}
+\caption{Visual representation of the second pattern (\smiley{}) stored in the network.}
+\label{fig:pattern2}
+\end{figure}
+
+After adding the second pattern, the weight matrix was updated according to:
+\begin{equation}
+W = \frac{1}{N}(pp^T + qq^T)
+\end{equation}
+where $p$ is the 'X' pattern and $q$ is the \smiley{} pattern.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{Weight Matrix Smiley + X.png}
+\caption{Updated weight matrix after storing both 'X' and \smiley{} patterns.}
+\label{fig:weight_matrix2}
+\end{figure}
+
+The updated weight matrix now encodes information about both patterns, with more complex connection patterns reflecting the correlations between neurons in both stored patterns.
+
+
+\subsubsection{Dynamics with Multiple Patterns}
+With two stored patterns, the network exhibits four potential fixed points: the two patterns and their negatives. The convergence behavior became more complex, as initial states could now be attracted to any of these fixed points based on their proximity in the state space.
+% When simulating the network with random initial conditions after storing two patterns, we observe that the network tends to converge to one of the stored patterns:
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.95\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{Network Converge Smiley.png}
+    \caption{Evolution of network activity from random initial conditions converging to the smiley pattern.}
+    \label{fig:converge_smiley}
+\end{subfigure}
+
+\vspace{0.5cm}
+\begin{subfigure}[b]{0.95\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{Network Converge X.png}
+    \caption{Evolution of network activity from different random initial conditions converging to the X pattern.}
+    \label{fig:converge_x}
+\end{subfigure}
+
+\caption{Network dynamics with two stored patterns. Different initial conditions lead to convergence to different stored patterns, demonstrating multiple attractor basins in the network.}
+\label{fig:dual_convergence}
+\end{figure}
+
+% The overlap calculations with both patterns reveal which attractor captured the network dynamics:
+% \begin{align}
+% \text{Overlap with 'X' pattern} &= 0.xxxx \\
+% \text{Overlap with \smiley{} pattern} &= 0.yyyy
+% \end{align}
+
+These results demonstrate that with multiple patterns stored, the network state space contains multiple attractors, and the dynamics converge to the attractor basin of the pattern most similar to the initial conditions.
+
+
+\subsection{Initial conditions}
+
+One of the key properties of Hopfield networks is their ability to recover patterns from corrupted or noisy inputs. I tested this by creating a corrupted version of the 'X' pattern with 30\% of its bits flipped:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{Corrupted Pattern 'X' 30 percent noise.png}
+\caption{The 'X' pattern corrupted with 30\% noise.}
+\label{fig:corrupted}
+\end{figure}
+
+Using this corrupted pattern as the initial state, I simulated the network dynamics:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{Network Activity Corrupted X.png}
+\caption{Network dynamics starting from the corrupted pattern. The network successfully recovers the original pattern.}
+\label{fig:recovery}
+\end{figure}
+
+The network successfully recovered the original pattern, demonstrating the error-correction capabilities of the Hopfield network.
+
+
+\subsection{Network capacity}
+
+The theoretical storage capacity of a Hopfield network is approximately $0.138N$ patterns, where $N$ is the number of neurons. For our network with $N=64$, this gives a theoretical capacity of about 9 patterns.
+
+To empirically test the network's capacity, I conducted multiple trials with an increasing number of random patterns stored in the network. For each pattern count, I measured the recovery success rate by corrupting each pattern and checking if the network could successfully recover it:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{capacity_curve.png}
+\caption{Network capacity curve showing recovery rate vs. number of stored patterns.}
+\label{fig:capacity}
+\end{figure}
+
+The results show that the recovery rate remains high (above 95\%) when storing up to approximately 7-8 patterns. Beyond that, the recovery rate drops rapidly, crossing the 50\% threshold at around 9 patterns, which aligns well with the theoretical capacity of $0.138 \times 64 \approx 9$ patterns.
+
+This decline in performance occurs because as more patterns are stored, they begin to interfere with each other in the weight matrix, creating spurious attractors and reducing the basin of attraction for each stored pattern.
 
 
 
