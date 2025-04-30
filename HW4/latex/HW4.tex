@@ -27,7 +27,20 @@
 
 \section*{Introduction}
 % Provide context about the assignment topic
-This is a brief introduction about the assignment topic.
+In 1943, \emph{Warren McCulloch} and \emph{Walter Pitts} showed that a neuron can be treated like an “on–off’’ switch that fires only when its inputs cross a threshold, laying the first mathematical bricks for digital‐style brain models.
+\emph{Donald Hebb} pushed the idea further in 1949 when he argued that connections between two switches grow stronger whenever they are active at the same time—a simple rule that hints at how learning might work.
+In the early 1970s, \emph{Hugh Wilson} and \emph{Jack Cowan} replaced those binary switches with smooth firing-rate equations and used phase–plane diagrams and bifurcations to explain real cortical rhythms and steady states.
+
+\emph{John Hopfield} showed in 1982 that a network with symmetric connections naturally settles into a handful of stable activity patterns that act as content‐addressable memories.  
+His calculation revealed a sweet spot: with Hebbian wiring, an $N$-cell Hopfield network can reliably store roughly $0.138\,N$ random binary patterns.  
+The trick behind these memories is positive feedback: when neurons excite themselves or each other strongly enough through an S-shaped, sigmoidal response curve, the circuit can flip between "off" and "on" states and stay there after the original input disappears—an effect called \emph{bistability}. 
+
+This report shows how these ideas develop, starting from a single neuron and expanding to a full Hopfield network.
+First, we will see how a \emph{single self-connected neuron} can behave like a tiny memory switch whose state survives noise.  
+Next, we will analyse a \emph{pair of mutually exciting neurons} and watch how their interaction carves the plane into two attractor basins separated by a saddle.  
+Finally, the ideas scale up to a \emph{64-unit Hopfield network} where we measure storage limits, draw energy landscapes, and test how well the network corrects errors.  
+By the end, we will have traced one continuous thread—from early logic gates to attractor networks showing how simple equations can capture the brain’s ability to store, retrieve and protect information over time.
+
 
 \section{Neuron with self-connection}
 
@@ -132,7 +145,7 @@ These findings confirm our observations from the time series simulations, provid
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{flux_analysis.png}
+    \includegraphics[width=0.5\textwidth]{flux_analysis.png}
     \caption{Flux analysis showing $\frac{dr}{dt}$ as a function of firing rate $r$. The zero-crossings represent fixed points of the system. The middle fixed point has a positive slope (unstable), while the other two have negative slopes (stable), confirming the bistable nature of the system.}
     \label{fig:flux}
 \end{figure}
@@ -151,7 +164,7 @@ The bifurcation diagram explores how the number and nature of fixed points chang
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\textwidth]{bifurcation_diagram.png}
+    \includegraphics[width=0.5\textwidth]{bifurcation_diagram.png}
     \caption{Bifurcation diagram showing how the number of fixed points changes with synaptic strength ($w$) and external input ($I$). Different colors represent different numbers of fixed points. The boundaries between regions represent bifurcation points where the qualitative behavior of the system changes.}
     \label{fig:bifurcation}
 \end{figure}
@@ -170,7 +183,7 @@ Figure 6 shows the evolution of the firing rates over time for four different in
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{dynamics2_plot.png}
+    \includegraphics[width=0.5\textwidth]{dynamics2_plot.png}
     \caption{Time evolution of the firing rates $x(t)$ and $y(t)$ for different initial conditions. The top panel shows the firing rate of neuron $x$, and the bottom panel shows the firing rate of neuron $y$.}
     \label{fig:dynamics}
 \end{figure}
