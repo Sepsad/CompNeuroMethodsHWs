@@ -41,7 +41,7 @@ This sigmoidal function has several key properties: output range of $[0, 120]$ s
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{activation_function.png}
+    \includegraphics[width=0.5\textwidth]{activation_function.png}
     \caption{Plot of the activation function $f(s) = 60(1 + \tanh(s))$ over the input range $[-5, 5]$. The function shows the characteristic S-shape of a sigmoid, with output values ranging from 0 to 120 spikes per second.}
     \label{fig:activation}
 \end{figure}
@@ -60,12 +60,12 @@ This behavior indicates the system has three fixed points, with the middle one (
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{deterministic_dynamics.png}
+    \includegraphics[width=0.5\textwidth]{deterministic_dynamics.png}
     \caption{Time evolution of the neuron firing rate $r(t)$ with three different initial conditions: $r(0) = 59$, $r(0) = 60$, and $r(0) = 61$. The trajectories demonstrate the bistable nature of the system, with two stable fixed points separated by an unstable threshold at $r \approx 60$.}
     \label{fig:deterministic}
 \end{figure}
 
-\subsection{Add noise - NOT FINAL}
+\subsection{Add noise}
 
 Adding noise to the system reveals additional insights:
 
@@ -77,8 +77,8 @@ Where $\eta(t)$ is Gaussian white noise and $\sigma$ is the noise magnitude.
 
 \begin{itemize}
     \item \textbf{(a)~Low noise} ($\sigma = 0.1$): The system mostly maintains its bistable behavior, exhibiting only small stochastic excursions around the two attracting fixed points.  A trajectory that starts near $r_0 \!\approx\! 60\,$Hz drifts away because this intermediate firing rate is an \emph{unstable} fixed point, so the rate does \emph{not} remain constant there. 
-    \item \textbf{(b)~Medium noise} ($\sigma = 1.0$): Larger fluctuations occasionally push trajectories across the separatrix, so the neuron sometimes switches between low- and high-firing states.
-    \item \textbf{(c)~High noise} ($\sigma = 5.0$): Noise dominates the dynamics; trajectories hop back and forth between the two attractors so frequently that the system effectively loses any memory of its initial condition.
+    \item \textbf{(b)~Medium noise} ($\sigma = 5.0$): Larger fluctuations occasionally push trajectories across the separatrix, so the neuron sometimes switches between zero and high-firing states.
+    \item \textbf{(c)~High noise} ($\sigma = 20.0$): Noise dominates the dynamics; trajectories hop back and forth between the two attractors so frequently that the system effectively loses any memory of its initial condition.
 \end{itemize}
 
 This demonstrates how noise can induce transitions between stable states in a bistable system, with the frequency of transitions increasing with noise magnitude.
@@ -92,15 +92,15 @@ This demonstrates how noise can induce transitions between stable states in a bi
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=\textwidth]{noise_strength_1.0.png}
+        \includegraphics[width=\textwidth]{noise_strength_5.0.png}
         \caption{Medium noise ($\sigma = 1.0$)}
         \label{fig:noise_medium}
     \end{subfigure}
     
     \vspace{0.3cm}
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=\textwidth]{noise_strength_5.0.png}
-        \caption{High noise ($\sigma = 5.0$)}
+        \includegraphics[width=\textwidth]{noise_strength_20.0.png}
+        \caption{High noise ($\sigma = 20.0$)}
         \label{fig:noise_high}
     \end{subfigure}
     \caption{Effect of different noise levels on the neuron dynamics. As noise magnitude increases, transitions between stable states become more frequent, demonstrating how noise can induce state switching in a bistable system.}
@@ -376,7 +376,7 @@ After storing the pattern, we can visualize the weight matrix $W$, which encodes
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{Weight Matrix X.png}
+\includegraphics[width=0.3\textwidth]{Weight Matrix X.png}
 \caption{Visualization of the weight matrix after storing the 'X' pattern. Red indicates positive weights, blue indicates negative weights.}
 \label{fig:weight_matrix}
 \end{figure}
@@ -471,7 +471,7 @@ where $p$ is the 'X' pattern and $q$ is the \smiley{} pattern.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{Weight Matrix Smiley + X.png}
+\includegraphics[width=0.3\textwidth]{Weight Matrix Smiley + X.png}
 \caption{Updated weight matrix after storing both 'X' and \smiley{} patterns.}
 \label{fig:weight_matrix2}
 \end{figure}
