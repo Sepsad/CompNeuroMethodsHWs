@@ -517,12 +517,12 @@ These results demonstrate that with multiple patterns stored, the network state 
 
 One of the key properties of Hopfield networks is their ability to recover patterns from corrupted or noisy inputs. I tested this by creating a corrupted version of the 'X' pattern with 30\% of its bits flipped:
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{Corrupted Pattern 'X' 30 percent noise.png}
-\caption{The 'X' pattern corrupted with 30\% noise.}
-\label{fig:corrupted}
-\end{figure}
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.4\textwidth]{Corrupted Pattern 'X' 30 percent noise.png}
+% \caption{The 'X' pattern corrupted with 30\% noise.}
+% \label{fig:corrupted}
+% \end{figure}
 
 Using this corrupted pattern as the initial state, I simulated the network dynamics:
 
@@ -557,6 +557,40 @@ This decline in performance occurs because as more patterns are stored, they beg
 
 \section{Conclusion}
 
-Summary of main findings and their significance.
+% \paragraph{Synthesis of Results}
+This homework shows that scaling up one simple idea—\emph{positive feedback paired with an S-shaped activation function}—turns small circuits into stronger memory devices.  
+\begin{itemize}
+    \item A single self-exciting neuron (Figs.\,1–5) already behaves like a two-state switch.  
+    \item A pair of mutually exciting neurons (Figs.\,6–9) embeds the same switch in a two-dimensional state space.  
+    \item A 64-unit Hopfield network (Figs.\,10–19) pushes the principle further, forming an associative memory that stores and retrieves full patterns.  
+\end{itemize}
+In every case, the key is the appearance of \emph{multiple attractors}, which give the circuit a stable way to hold information over time.
+
+\subsubsection*{1.\;Self-Connected Neuron (Figures 1–5)}
+A single neuron with a sigmoidal transfer curve (Figure 1) becomes a compact memory switch when it feeds back onto itself: the feedback creates three fixed points—two stable equilibria (quiescent and high-rate) separated by an unstable threshold (flux plot, Figure 4). Random fluctuations occasionally push the firing rate across this threshold, and the jump frequency rises with noise amplitude (Figure 3). Together, these results show that an self-connected neuron alone can implement a robust yet tunable two-state memory element.
+
+
+\subsubsection*{2.\;Two Neurons with Mutual Excitation (Figures 6–9)}
+In a reciprocally exciting two-neuron module, state space analysis reveals three fixed points—a low-rate node, a saddle, and a high-rate node—whose stability classes are confirmed by the eigenvalues of the Jacobian matrix (Figure 8). The saddle’s one-dimensional stable manifold acts as a separatrix, partitioning state space so that trajectories flow either toward global quiescence or toward a self-sustained high-activity state, as illustrated by the vector field in Figure 7. When the external input current is strongly negative, the low-rate node is the sole attractor; however, as the tonic drive~$I$ is increased past a critical value ($I \approx -16$), a saddle–node bifurcation creates a saddle–high-rate pair, switching the circuit from monostable to bistable dynamics (Figure 9). Thus, the microcircuit functions as a neural flip-flop whose mode—monostable or bistable—can be tuned by the level of external drive.
+
+
+\subsubsection*{3.\;Hopfield Network (Figures 10–19)}
+
+Storing a single prototype in a Hopfield network produces two global
+attractors—the pattern itself and its complement—so random initial
+states reliably converge to whichever basin is closer (Figure~13).
+Adding a second prototype doubles the attractor count to four
+(Figure~16) and still allows the network to reconstruct images
+containing up to 30\,\% corrupted pixels (Figures~17).  Systematic
+capacity tests (Figure~18) confirm the classic limit of roughly
+$0.138N$ stable memories (about nine for the present $N=64$ network);
+beyond this point, interference creates spurious minima and sharply
+reduces recall accuracy. these findings show that the
+Hopfield architecture scales the bistable switch into a high-dimensional
+associative memory whose performance is both powerful and predictably
+bounded.
+
+% \subsection*{Broader Significance}
+% Across cellular, microcircuit, and network scales, \emph{recurrent excitation coupled with a nonlinear response curve} consistently yields multiple, stable activity states.  Such attractor dynamics provide a unifying computational substrate for working memory, decision thresholds, and error-correcting pattern completion in both biological and artificial neural systems.  Analytical tools—state space geometry, bifurcation tracking, and Lyapunov-style energy functions—afford precise control over these dynamics and thereby inform the principled design of memory circuits with desired stability–flexibility trade-offs.
 
 \end{document}
