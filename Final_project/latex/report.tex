@@ -140,9 +140,10 @@ We centered the activity data, computed the covariance matrix, and performed eig
 \subsection{Stability Restults}
 
 The authors analyze the stability of a small ring attractor network using a dynamical systems approach, showing that continuous representations of circular variables, like head direction, can be maintained with as few as four neurons. This is achieved by constructing a set of line attractors, each defined by a fixed subset of active neurons, and smoothly transitioning between them as the bump of activity shifts. These stitched-together line attractors form a continuous ring attractor manifold. The bump configuration is characterized by its amplitude \( a \), width \( w \), and orientation \( \psi \), and the dynamics reduce to three differential equations governing how these evolve over time. A fixed point, representing a stable bump, occurs when all three derivatives vanish. Crucially, the stability of these fixed points depends on whether perturbations in bump orientation decay (\( \lambda_\psi < 0 \)) or are neutrally stable (\( \lambda_\psi = 0 \)). The system achieves marginal stability (a continuous attractor) when the strength of local excitation \( J_E \) is tuned to an optimal value \( J_E^* \), satisfying:
-\[
+\begin{equation}
 \frac{1}{J_E^*} = \frac{1}{N} \sum_{k \in K_{\text{act}}} \sin^2(\theta_k - \psi^*)
-\]
+\end{equation}
+
 This ensures the curvature of the energy landscape is flattened along the ring, enabling drift-free persistent activity.
 
 When the network is optimally tuned in this way, narrow and robust bumps form that do not drift in the absence of input, allowing the network to stably represent continuous angular variables. Perturbations orthogonal to the attractor manifold (i.e., changes in bump width or amplitude) are suppressed due to negative eigenvalues, while motion along the attractor (changes in \( \psi \)) is marginally stable. This tuning balances local excitation with global inhibition and ensures that the active submatrix of the recurrent connectivity has a zero leading eigenvalue, an indicator of line attractor dynamics. If \( J_E \) deviates from its optimal value, the bump either drifts toward discrete fixed points or becomes unstable. Thus, the network’s ability to maintain continuous attractor dynamics, and hence a faithful internal representation of variables like head direction, depends critically on fine-tuned parameters that place it near the boundary between stability and marginal stability.
@@ -208,14 +209,60 @@ In the following section, we examines how different initial conditions influence
     % \caption{Final vs. initial orientation in the network ($J_E = 4.0, J_I = -2.0$). The one-to-one relationship confirms that the network maintains a continuous representation of orientation with no preferred discrete states or drift.}
 \end{subfigure}
 
-\caption{PCA analysis of ring attractor network dynamics. (A,B) Both manual and scikit-learn PCA implementations reveal a circular manifold in the first two principal components, indicating a continuous ring attractor. (C) The perfect cosine alignment between methods confirms implementation correctness. (D) The network maintains all orientations without discretizing, demonstrating true continuous attractor dynamics despite having only 6 neurons.}
+\caption{PCA analysis of ring attractor network dynamics. (A,B) Both manual and scikit-learn PCA implementations reveal a circular manifold in the first two principal components, indicating a continuous ring attractor. (C) The cosine alignment between methods confirms implementation correctness. (D) The network maintains all orientations without discretizing, demonstrating true continuous attractor dynamics.}
 \label{fig:pca_analysis}
 \end{figure}
 
 
-\subsection{different parameter sets evaluation}
+\subsection{Influence of Different Parameter Sets}
 
-[Continue presenting results, organized by logical categories]
+\subsubsection*{Different Values of \( J_E \) without Angular Velocity Input}
+
+
+To investigate how network stability depends on synaptic tuning, we varied the local excitation strength \( J_E \) over the six values examined in Fig.~2 of Noorman et al.—namely, \( J_E \in \{12, 6, 4, 3, 2.4, 1.2\} \), while fixing the broad inhibition at \( J_I = -2 \) and the constant feedforward drive at \( c_{\text{ff}} = 1 \). These values span the range from weak to strong excitation relative to the analytically derived optimal values \( J_E^\ast \) for a ring attractor in a network with \( N = 6 \) neurons.
+
+Fig N illustrates how the network dynamics qualitatively shift across this range. 
+At the two extremes—strong excitation (\( J_E = 12 \)) and weak excitation (\( J_E = 1.2 \))—the bump of activity does \emph{not} collapse onto a finite set of stable orientations. 
+Instead, the network fails to stabilize, exhibiting persistent or drifting dynamics that do not converge to attractor states. 
+% These regimes lie outside the range of optimal tuning, where either excessive excitation or insufficient recurrent support prevents the formation of discrete or continuous attractors.
+
+At intermediate values such as \( J_E = 6 \) and \( J_E = 3 \), the dynamics exhibit partial stabilization: although the raw activity may initially form a broad cloud, it eventually contracts onto a small number of stable head-direction angles, consistent with discrete point attractors in PCA space. 
+This indicates that the network relaxes into isolated fixed points rather than maintaining a continuous representation.
+
+Interestingly, two finely tuned values, \( J_E = 4 \) and \( J_E = 2.4 \), yield qualitatively different behavior. 
+In these cases, the population activity traces out a near-continuous ring in the first two principal components, with characteristic six-fold symmetry arising from the network size \( N = 6 \). 
+Minor gaps at specific orientations are expected from finite-size sampling, but the attractor manifold remains effectively continuous. 
+These two values correspond to analytically identified optimal excitation strengths that flatten the energy landscape along the angular dimension, enabling the network to support a marginally stable bump across the full ring.
+
+Together, these results reveal a phase-like transition in the attractor structure: only near the optimal values of \( J_E \) does the system maintain a continuous head-direction code. 
+Away from these values, the network either relaxes into discrete attractor states or fails to stabilize altogether, underscoring the importance of synaptic tuning for supporting robust ring attractor dynamics in small networks.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{\textwidth}
+    \centering
+    \caption*{\textbf{A}}
+    \includegraphics[width=\textwidth]{orientation_comparison_without_v.png}
+\end{subfigure}
+
+\vspace{0.1cm}
+
+\begin{subfigure}{\textwidth}
+    \centering
+    \caption*{\textbf{B}}
+    \includegraphics[width=\textwidth]{manual_pca_without_v.png}
+\end{subfigure}
+
+\caption{Effect of excitation strength \( J_E \) on ring attractor dynamics. (A) Final vs. initial orientation for six different values of \( J_E \). Perfect diagonal relationships indicate continuous attractor behavior, while discrete clusters points indicate breakdown of the ring manifold. 
+(B) Corresponding 3D PCA representations showing the attractor manifold structure. Smooth ring-like trajectories emerge at optimal \( J_E \) values (4.0 and 2.4), while other parameter settings produce either discrete point attractors or unstable dynamics.}
+\label{fig:je_parameter_sweep}
+\end{figure}
+
+
+
+\subsubsection*{Different Values of \( J_E \) with Angular Velocity Input}
+Here we varied the local excitation strength \( J_E \) while applying a constant angular velocity input \( v_{\text{in}} = 1.5 \). 
+This input biases the bump motion, allowing us to explore how the network dynamics respond to both synaptic tuning and external drive.
 
 
 \section{Discussion}
